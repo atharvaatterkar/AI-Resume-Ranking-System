@@ -1,138 +1,122 @@
-Factorial24
-AI-Powered FAQ Chatbot & Resume Ranking System
-This repository contains two main AI applications:
+# AI Resume Ranking System 🔍📄
 
-RAG-based FAQ Chatbot - An intelligent chatbot using Retrieval-Augmented Generation
+This repository contains an AI agent that ranks resumes based on relevance to a given job description using natural language processing, semantic similarity, and entity extraction.
 
-Resume Ranking System - An AI agent for ranking resumes against job descriptions
+---
 
-🚀 Features
-FAQ Chatbot
-Conversational AI with memory using LangChain
-Vector similarity search with FAISS and Cohere embeddings
-Context-aware responses powered by Groq's LLaMA model
-Interactive Streamlit interface
-Source document retrieval for transparency
-Resume Ranking System
-PDF text extraction from resume files
-NLP preprocessing with spaCy
-Semantic similarity matching using Sentence Transformers
-Named Entity Recognition for skill extraction
-Multi-factor scoring algorithm combining semantic similarity, skills, and experience
-Clustering-based section detection for better resume analysis
-🛠️ Technology Stack
-LangChain - LLM application framework
-Streamlit - Web interface
-FAISS - Vector database for similarity search
-Cohere - Text embeddings
-Groq - LLM inference (LLaMA 3 70B)
-Sentence Transformers - Semantic embeddings
-spaCy - Natural language processing
-PyMuPDF - PDF text extraction
-scikit-learn - Machine learning utilities
-Pandas - Data manipulation
-📁 Project Structure
-.
-├── rag/                                  # FAQ Chatbot Directory
-│   ├── rag.py                        # Main Streamlit chatbot application
-│   ├── test.ipynb                  # RAG chatbot development notebook
-├── agent/
-│   ├── test.ipynb                 # Resume ranking testing and evaluation
-│   └── data/                        # Sample resume PDFs
-│       ├── resume-01.pdf
-│       ├── resume-02.pdf
-│       └── resume-03.pdf
-│── requirements.txt          # Python dependencies for chatbot
-├── README.md             # Project documentation
-└── .env                            # Environment variables (create this)
-⚙️ Setup & Installation
-Prerequisites
-Python 3.8+
-API Keys for:
-Groq (for LLM)
-Cohere (for embeddings)
-Installation Steps
-Clone the repository
+## 🚀 Features
 
+### Resume Ranking System
+- 📄 PDF text extraction from resume files using `PyMuPDF`
+- 🔍 NLP preprocessing using `spaCy` (tokenization, lemmatization, stopword removal)
+- 🤖 Skill extraction via `BERT-based Named Entity Recognition (dslim/bert-base-NER)`
+- 🧠 Semantic similarity scoring using `Sentence Transformers (MiniLM-L6-v2)`
+- 📊 Multi-factor scoring algorithm combining:
+  - Semantic similarity
+  - Skill match (NER + keyword)
+  - Experience (extracted via regex)
+  - Education detection (degree keywords)
+- 🔗 Section clustering using `Agglomerative Clustering` for better contextual analysis
+
+---
+
+## 🛠️ Technology Stack
+
+- **PyMuPDF** – PDF parsing and text extraction
+- **spaCy** – Text preprocessing (NLP pipeline)
+- **Transformers** – BERT-based NER model (`dslim/bert-base-NER`)
+- **Sentence Transformers** – Semantic embeddings (`all-MiniLM-L6-v2`)
+- **scikit-learn** – Agglomerative clustering and cosine similarity
+- **Pandas** – Tabular results for resume scoring
+- **NumPy** – Vector operations
+
+---
+
+## 📁 Project Structure
+├── Main/
+│ ├── Ranking.ipynb # Resume ranking notebook
+│ └── data/ # Sample resume PDFs, add your resume here
+│ ├── resume-01.pdf
+│ ├── resume-02.pdf
+│ └── resume-03.pdf
+| └── resume-04.pdf
+├── requirements.txt # Python dependencies
+└── README.md # Project documentation
+
+---
+
+## ⚙️ Setup & Installation
+
+### Prerequisites
+
+- Python 3.8+
+- Internet access (for downloading models)
+
+### Installation Steps
+
+1. **Clone the repository**
+
+```bash
 git clone <repository-url>
-cd factorial24
-Create virtual environment
+cd resume-ranking-system
 
-python -m venv myenv
-myenv\Scripts\activate  
-Install dependencies
+2. **Create virtual environment**
 
+```bash
+python -m venv venv
+venv\Scripts\activate       # Windows
+# or
+source venv/bin/activate    # Mac/Linux
+
+3. **Install dependencies**
+
+```bash
 pip install -r requirements.txt
-Download spaCy model
 
-python -m spacy download en_core_web_sm
-Set up environment variables Create a .env file in the root directory:
 
-GROQ_API_KEY=your_groq_api_key_here
-COHERE_API_KEY=your_cohere_api_key_here
-Usage
-Running the FAQ Chatbot
-Start the Streamlit application in rag/ directory
 
-streamlit run rag.py
-Open your browser eg. http://localhost:8501
+🧪 Usage
+Running the Resume Ranking System
+1. Open the notebook:
+```bash
+jupyter notebook Main/Ranking.ipynb
 
-Using the Resume Ranking System
-Open the Jupyter notebooks in the agent/ directory:
-
-jupyter notebook agent/test.ipynb
-Place resume PDFs in the agent/data/ directory
-
-Define your job description in the notebook
-
-Run the ranking algorithm to get scored and ranked resumes
-
-Example Usage
-FAQ Chatbot:
-
-User: "What services do you provide?"
-Bot: "We offer cloud platforms, data analytics, and cybersecurity solutions..."
-Resume Ranking:
+2. Add your job description inside the notebook:
 
 JD_TEXT = """We are hiring a Data Science Intern with experience in 
 NLP, Machine Learning and Deep Learning..."""
 
-# Results show ranked resumes with scores
+3.Place resume PDFs in the Main/data/ directory
+
+4.Run the notebook cells. You will get a ranked table like:
+
 filename        score
 resume-03.pdf   0.283
 resume-01.pdf   0.274
 resume-02.pdf   0.261
-Project's Working
-RAG Chatbot Architecture
-Document Processing: FAQ data is converted to LangChain documents
-Chunking: Text is split into manageable chunks
-Embedding: Cohere creates vector embeddings for semantic search
-Vector Storage: FAISS stores embeddings for fast retrieval
-Query Processing: User questions are embedded and matched with relevant chunks
-Response Generation: Groq's LLaMA model generates contextual responses
-Memory Management: Conversation history is maintained for context
+
+
+🧠 Project's Working
 Resume Ranking Algorithm
-Text Extraction: PDF content extracted using PyMuPDF
-Preprocessing: Text cleaning, tokenization, and lemmatization with spaCy
-Section Detection: Agglomerative clustering groups similar content
-Skill Extraction: Named Entity Recognition identifies relevant skills
-Semantic Matching: Sentence Transformers compute job description similarity
-Multi-factor Scoring: Combines semantic similarity, skill matches, and experience
-Configuration
-Customizing the Chatbot
-Modify RAW_FAQS in rag.py to add your own FAQ data
-Adjust LLM parameters (temperature, max_tokens) for different response styles
-Change embedding models in the Cohere configuration
+Text Extraction: Extracts resume content using PyMuPDF
+Preprocessing: Cleans and lemmatizes text using spaCy
+Section Detection: Groups similar content using Agglomerative Clustering
+Skill Extraction: Combines BERT-based NER and keyword-matching
+Semantic Matching: Measures similarity to JD using Sentence Transformers
+Scoring: Computes final rank score based on:
+Semantic match (alpha)
+Skill overlap (beta)
+Experience in years (gamma)
+Education flag (delta)
+
+🔧 Configuration
 Tuning Resume Ranking
-Adjust scoring weights in score_resume function:
-alpha: Semantic similarity weight
-beta: Skill matching weight
-gamma: Experience factor weight
-Modify clustering parameters for better section detection
-Add custom skill extraction patterns.
-🔗 Resources
-LangChain Documentation
-Streamlit Documentation
-Cohere API Documentation
-Groq API Documentation
-Sentence Transformers
+You can adjust the weights in the scoring function:
+```python
+score = alpha * semantic_score + beta * skill_score + gamma * experience_score + delta * education_flag
+
+alpha: Weight for semantic match (default: 0.5)
+beta: Weight for skill overlap (default: 0.3)
+gamma: Weight for experience (default: 0.1)
+delta: Weight for education (default: 0.1)
+
