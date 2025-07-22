@@ -22,26 +22,29 @@ This repository contains an AI agent that ranks resumes based on relevance to a 
 
 ## 🛠️ Technology Stack
 
-- **PyMuPDF** – PDF parsing and text extraction
-- **spaCy** – Text preprocessing (NLP pipeline)
-- **Transformers** – BERT-based NER model (`dslim/bert-base-NER`)
-- **Sentence Transformers** – Semantic embeddings (`all-MiniLM-L6-v2`)
-- **scikit-learn** – Agglomerative clustering and cosine similarity
-- **Pandas** – Tabular results for resume scoring
-- **NumPy** – Vector operations
+- **PyMuPDF** – PDF parsing and text extraction  
+- **spaCy** – Text preprocessing (NLP pipeline)  
+- **Transformers** – BERT-based NER model (`dslim/bert-base-NER`)  
+- **Sentence Transformers** – Semantic embeddings (`all-MiniLM-L6-v2`)  
+- **scikit-learn** – Agglomerative clustering and cosine similarity  
+- **Pandas** – Tabular results for resume scoring  
+- **NumPy** – Vector operations  
 
 ---
 
 ## 📁 Project Structure
-├── Main/
-│ ├── Ranking.ipynb # Resume ranking notebook
-│ └── data/ # Sample resume PDFs, add your resume here
-│ ├── resume-01.pdf
-│ ├── resume-02.pdf
-│ └── resume-03.pdf
-| └── resume-04.pdf
-├── requirements.txt # Python dependencies
-└── README.md # Project documentation
+
+```
+Main/
+├── Ranking.ipynb               # Resume ranking notebook
+└── data/                       # Sample resume PDFs (add your own here)
+    ├── resume-01.pdf
+    ├── resume-02.pdf
+    ├── resume-03.pdf
+    └── resume-04.pdf
+requirements.txt                # Python dependencies
+README.md                       # Project documentation
+```
 
 ---
 
@@ -50,15 +53,18 @@ This repository contains an AI agent that ranks resumes based on relevance to a 
 ### Prerequisites
 
 - Python 3.8+
-- Internet access (for downloading models)
+- Internet access (to download models)
 
-### Installation Steps
+---
+
+### 🔧 Installation Steps
 
 1. **Clone the repository**
 
 ```bash
 git clone <repository-url>
 cd resume-ranking-system
+```
 
 2. **Create virtual environment**
 
@@ -66,57 +72,86 @@ cd resume-ranking-system
 python -m venv venv
 venv\Scripts\activate       # Windows
 # or
-source venv/bin/activate    # Mac/Linux
+source venv/bin/activate    # macOS/Linux
+```
 
 3. **Install dependencies**
 
 ```bash
 pip install -r requirements.txt
+```
 
+4. **Download spaCy model**
 
+```bash
+python -m spacy download en_core_web_sm
+```
 
-🧪 Usage
-Running the Resume Ranking System
+---
+
+## 🧪 Usage
+
+### Running the Resume Ranking System
+
 1. Open the notebook:
+
 ```bash
 jupyter notebook Main/Ranking.ipynb
+```
 
-2. Add your job description inside the notebook:
+2. Define your job description in the notebook:
 
+```python
 JD_TEXT = """We are hiring a Data Science Intern with experience in 
 NLP, Machine Learning and Deep Learning..."""
+```
 
-3.Place resume PDFs in the Main/data/ directory
+3. Place resume PDFs in the `Main/data/` directory.
 
-4.Run the notebook cells. You will get a ranked table like:
+4. Run the notebook cells. You will get a ranked table like:
 
+```
 filename        score
 resume-03.pdf   0.283
 resume-01.pdf   0.274
 resume-02.pdf   0.261
+```
 
+---
 
-🧠 Project's Working
-Resume Ranking Algorithm
-Text Extraction: Extracts resume content using PyMuPDF
-Preprocessing: Cleans and lemmatizes text using spaCy
-Section Detection: Groups similar content using Agglomerative Clustering
-Skill Extraction: Combines BERT-based NER and keyword-matching
-Semantic Matching: Measures similarity to JD using Sentence Transformers
-Scoring: Computes final rank score based on:
-Semantic match (alpha)
-Skill overlap (beta)
-Experience in years (gamma)
-Education flag (delta)
+## 🧠 Project's Working
 
-🔧 Configuration
-Tuning Resume Ranking
+### Resume Ranking Algorithm
+
+- **Text Extraction**: Extracts resume content using `PyMuPDF`  
+- **Preprocessing**: Cleans and lemmatizes text using `spaCy`  
+- **Section Detection**: Groups similar content using `Agglomerative Clustering`  
+- **Skill Extraction**: Combines BERT-based NER and keyword-matching  
+- **Semantic Matching**: Measures similarity to JD using `Sentence Transformers`  
+- **Scoring**: Computes final rank score based on:
+  - Semantic match (**alpha**)
+  - Skill overlap (**beta**)
+  - Experience in years (**gamma**)
+  - Education flag (**delta**)
+
+---
+
+## 🔧 Configuration
+
+### Tuning Resume Ranking
+
 You can adjust the weights in the scoring function:
+
 ```python
 score = alpha * semantic_score + beta * skill_score + gamma * experience_score + delta * education_flag
+```
 
-alpha: Weight for semantic match (default: 0.5)
-beta: Weight for skill overlap (default: 0.3)
-gamma: Weight for experience (default: 0.1)
-delta: Weight for education (default: 0.1)
+| Weight | Meaning                     | Default |
+|--------|-----------------------------|---------|
+| alpha  | Semantic match              | 0.5     |
+| beta   | Skill overlap               | 0.3     |
+| gamma  | Experience in years         | 0.1     |
+| delta  | Education presence (degree) | 0.1     |
+
+---
 
